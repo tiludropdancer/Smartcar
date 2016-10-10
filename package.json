@@ -1,0 +1,20 @@
+{
+  "name": "smartcar_app",
+  "version": "1.0.0",
+  "description": "A node.js adapter of GM API to Smartcar API.",
+  "main": "adapter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Smartcar",
+    "API",
+    "GM",
+    "adapter"
+  ],
+  "author": "Anastasia Radchenko",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
