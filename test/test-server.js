@@ -5,9 +5,6 @@ var expect = chai.expect;
 
 chai.use(chaiHttp);
 
-//test improper vehicle id input, incorrect action in engineTest (should return statusCode 400)
-//should I test 500 internal server error somewhere?
-
 describe('vehicleInfoTest', function() {
 	this.timeout(0);
 	it('should list vin, color, doorCount, driveTrain on /vehicles/1234 GET', function(done) {
@@ -200,7 +197,7 @@ describe('startStopEngineTest', function() {
 	this.timeout(0);
 	it('should list status on START action /vehicles/1234/engine POST', function(done) {
   		chai.request(server)
-    		.post('/vehicles/1234/engine') //add body with {"action": "START"}
+    		.post('/vehicles/1234/engine')
     		.send({action: 'START'})
     		.end(function(err, res) {
 				expect(res).to.have.status(200);
@@ -212,7 +209,7 @@ describe('startStopEngineTest', function() {
 	});
 	it('should list status on STOP action /vehicles/1234/engine POST', function(done) {
   		chai.request(server)
-    		.post('/vehicles/1234/engine') //add body with {"action": "STOP"}
+    		.post('/vehicles/1234/engine')
     		.send({action: 'STOP'})
     		.end(function(err, res) {
 				expect(res).to.have.status(200);
@@ -224,7 +221,7 @@ describe('startStopEngineTest', function() {
 	});
 	it('should list status on START action /vehicles/1235/engine POST', function(done) {
   		chai.request(server)
-    		.post('/vehicles/1235/engine') //add body with {"action": "STOP"}
+    		.post('/vehicles/1235/engine')
     		.send({action: 'START'})
     		.end(function(err, res) {
 				expect(res).to.have.status(200);
@@ -236,7 +233,7 @@ describe('startStopEngineTest', function() {
 	});
 	it('should list status on STOP action /vehicles/1235/engine POST', function(done) {
   		chai.request(server)
-    		.post('/vehicles/1235/engine') //add body with {"action": "STOP"}
+    		.post('/vehicles/1235/engine')
     		.send({action: 'STOP'})
     		.end(function(err, res) {
 				expect(res).to.have.status(200);
@@ -316,6 +313,17 @@ describe('startStopEngineTest', function() {
   		chai.request(server)
     		.post('/vehicles/1234/engine')
     		.send({foo: 'START'})
+    		.end(function(err, res) {
+				expect(res).to.have.status(400);
+				expect(res).to.be.html;
+            	expect(res.text).to.be.string('Action is required.');
+				done();
+			});
+	});
+	it('should not find incorrect data field foo and value bar /vehicles/1234/engine POST', function(done) {
+  		chai.request(server)
+    		.post('/vehicles/1234/engine')
+    		.send({foo: 'bar'})
     		.end(function(err, res) {
 				expect(res).to.have.status(400);
 				expect(res).to.be.html;
