@@ -210,61 +210,119 @@ describe('startStopEngineTest', function() {
 				done();
 			});
 	});
-	// it('should list status on STOP action /vehicles/1234/engine POST', function(done) {
- //  		chai.request(server)
- //    		.post('/vehicles/1234/engine') //add body with {"action": "STOP"}
- //    		.send({action: 'STOP'})
- //    		.end(function(err, res) {
-	// 			expect(res).to.have.status(200);
-	// 			expect(res).to.be.json;
-	// 			expect(res.body).to.be.an('object');
-	// 			expect(res.body).to.have.property('status').that.is.a('string').oneOf(['success', 'error']);
-	// 		});
-	// });
-	// it('should list status on START action /vehicles/1235/engine POST', function(done) {
- //  		chai.request(server)
- //    		.post('/vehicles/1235/engine') //add body with {"action": "STOP"}
- //    		.send({action: 'START'})
- //    		.end(function(err, res) {
-	// 			expect(res).to.have.status(200);
-	// 			expect(res).to.be.json;
-	// 			expect(res.body).to.be.an('object');
-	// 			expect(res.body).to.have.property('status').that.is.a('string').oneOf(['success', 'error']);
-	// 			done();
-	// 		});
-	// });
-	// it('should list status on STOP action /vehicles/1235/engine POST', function(done) {
- //  		chai.request(server)
- //    		.post('/vehicles/1235/engine') //add body with {"action": "STOP"}
- //    		.send({action: 'STOP'})
- //    		.end(function(err, res) {
-	// 			expect(res).to.have.status(200);
-	// 			expect(res).to.be.json;
-	// 			expect(res.body).to.be.an('object');
-	// 			expect(res.body).to.have.property('status').that.is.a('string').oneOf(['success', 'error']);
-	// 			done();
-	// 		});
-	// });
-	// it('should not find /vehicles/888/engine POST', function(done) {
- //  		chai.request(server)
- //    		.post('/vehicles/888/engine')
- //    		.end(function(err, res) {
-	// 			expect(res).to.have.status(404);
-	// 			expect(res).to.be.html;
- //            	expect(res.text).to.be.string('Vehicle id: 888 not found.');
-	// 			done();
-	// 		});
-	// });
-	// it('should not **find** with incorrect action in input /vehicles/1234/engine POST', function(done) {
- //  		chai.request(server)
- //    		.post('/vehicles/888/engine')
- //    		.end(function(err, res) {
-	// 			expect(res).to.have.status(404);
-	// 			expect(res).to.be.html;
- //            	expect(res.text).to.be.string('***action not found.***'); //different message
-	// 			done();
-	// 		});
-	// });
+	it('should list status on STOP action /vehicles/1234/engine POST', function(done) {
+  		chai.request(server)
+    		.post('/vehicles/1234/engine') //add body with {"action": "STOP"}
+    		.send({action: 'STOP'})
+    		.end(function(err, res) {
+				expect(res).to.have.status(200);
+				expect(res).to.be.json;
+				expect(res.body).to.be.an('object');
+				expect(res.body).to.have.property('status').that.is.a('string').oneOf(['success', 'error']);
+				done();
+			});
+	});
+	it('should list status on START action /vehicles/1235/engine POST', function(done) {
+  		chai.request(server)
+    		.post('/vehicles/1235/engine') //add body with {"action": "STOP"}
+    		.send({action: 'START'})
+    		.end(function(err, res) {
+				expect(res).to.have.status(200);
+				expect(res).to.be.json;
+				expect(res.body).to.be.an('object');
+				expect(res.body).to.have.property('status').that.is.a('string').oneOf(['success', 'error']);
+				done();
+			});
+	});
+	it('should list status on STOP action /vehicles/1235/engine POST', function(done) {
+  		chai.request(server)
+    		.post('/vehicles/1235/engine') //add body with {"action": "STOP"}
+    		.send({action: 'STOP'})
+    		.end(function(err, res) {
+				expect(res).to.have.status(200);
+				expect(res).to.be.json;
+				expect(res.body).to.be.an('object');
+				expect(res.body).to.have.property('status').that.is.a('string').oneOf(['success', 'error']);
+				done();
+			});
+	});
+	it('should not find /vehicles/888/engine POST', function(done) {
+  		chai.request(server)
+    		.post('/vehicles/888/engine')
+    		.send({action: 'START'})
+    		.end(function(err, res) {
+				expect(res).to.have.status(404);
+				expect(res).to.be.html;
+            	expect(res.text).to.be.string('Vehicle id: 888 not found.');
+				done();
+			});
+	});
+	it('should not find incorrect action value foo /vehicles/1234/engine POST', function(done) {
+  		chai.request(server)
+    		.post('/vehicles/1234/engine')
+    		.send({action: 'foo'})
+    		.end(function(err, res) {
+				expect(res).to.have.status(400);
+				expect(res).to.be.html;
+            	expect(res.text).to.be.string('Invalid action: foo');
+				done();
+			});
+	});
+	it('should not find incorrect action value Start /vehicles/1234/engine POST', function(done) {
+  		chai.request(server)
+    		.post('/vehicles/1234/engine')
+    		.send({action: 'Start'})
+    		.end(function(err, res) {
+				expect(res).to.have.status(400);
+				expect(res).to.be.html;
+            	expect(res.text).to.be.string('Invalid action: Start');
+				done();
+			});
+	});
+	it('should not find incorrect action value null /vehicles/1234/engine POST', function(done) {
+  		chai.request(server)
+    		.post('/vehicles/1234/engine')
+    		.send({action: null})
+    		.end(function(err, res) {
+				expect(res).to.have.status(400);
+				expect(res).to.be.html;
+            	expect(res.text).to.be.string('Action is required.');
+				done();
+			});
+	});
+	it('should not find incorrect action value empty string /vehicles/1234/engine POST', function(done) {
+  		chai.request(server)
+    		.post('/vehicles/1234/engine')
+    		.send({action: ''})
+    		.end(function(err, res) {
+				expect(res).to.have.status(400);
+				expect(res).to.be.html;
+            	expect(res.text).to.be.string('Action is required.');
+				done();
+			});
+	});
+	it('should not find incorrect data field Action /vehicles/1234/engine POST', function(done) {
+  		chai.request(server)
+    		.post('/vehicles/1234/engine')
+    		.send({Action: 'START'})
+    		.end(function(err, res) {
+				expect(res).to.have.status(400);
+				expect(res).to.be.html;
+            	expect(res.text).to.be.string('Action is required.');
+				done();
+			});
+	});
+	it('should not find incorrect data field foo /vehicles/1234/engine POST', function(done) {
+  		chai.request(server)
+    		.post('/vehicles/1234/engine')
+    		.send({foo: 'START'})
+    		.end(function(err, res) {
+				expect(res).to.have.status(400);
+				expect(res).to.be.html;
+            	expect(res.text).to.be.string('Action is required.');
+				done();
+			});
+	});
 });
 
 describe('404Test', function() {
