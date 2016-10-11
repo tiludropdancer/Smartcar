@@ -1,3 +1,12 @@
+/**
+* Module that makes requests to GM RESTful API endpoints
+*
+* Author: Anastasia Radchenko
+* Date: 10/11/16
+*/
+
+
+// Loads rest module
 var rest = require('./rest.js');
 
 var getOptions = function(uri) {
@@ -10,27 +19,31 @@ var getOptions = function(uri) {
 	return options;
 }
 
-exports.vehicleInfo = function(id, onResult1) {
+// Sends request to GM service
+exports.vehicleInfo = function(id, onResult) {
 	var options = getOptions('/getVehicleInfoService');
 	var data = {'id': id, 'responseType': 'JSON'};
-	rest.post(options, data, onResult1);
+	rest.post(options, data, onResult);
 }
 
-exports.security = function(id, onResult2) {
+// Sends request to GM service
+exports.security = function(id, onResult) {
 	var options = getOptions('/getSecurityStatusService');
 	var data = {'id': id, 'responseType': 'JSON'};
-	rest.post(options, data, onResult2);
+	rest.post(options, data, onResult);
 }
 
-exports.fuelBatteryLevel = function(id, onResult3_4) {
+// Sends request to GM service
+exports.fuelBatteryLevel = function(id, onResult) {
 	var options = getOptions('/getEnergyService');
 	var data = {'id': id, 'responseType': 'JSON'};
-	rest.post(options, data, onResult3_4);
+	rest.post(options, data, onResult);
 }
 
-exports.startStopEngine = function(id, action, onResult5) {
+// Sends request to GM service
+exports.startStopEngine = function(id, action, onResult) {
 	var options = getOptions('/actionEngineService');
 	var command = action + '_VEHICLE';
 	var data = {'id': id, 'command': command, 'responseType': 'JSON'};
-	rest.post(options, data, onResult5);
+	rest.post(options, data, onResult);
 }

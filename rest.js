@@ -1,3 +1,13 @@
+/**
+* Utility module that helps making http requests to a RESTful web service
+* (only POST method is implemented, GM API supports only POST requests)
+*
+* Author: Anastasia Radchenko
+* Date: 10/11/16
+*/
+
+
+// load http module
 var http = require('http');
 
 exports.post = function(options, data, onResult) {

@@ -1,13 +1,30 @@
+/**
+* Main module of Web Application
+*
+* Author: Anastasia Radchenko
+* Date: 10/11/16
+*/
+
+
+// Loads express module
 var express = require('express');
 var app = express();
-var bodyParser = require('body-parser');
 module.exports = app;
+
+// Set default response content type to 'text/plain'
+app.use(function(req, res, next) {
+	res.contentType('text/plain');
+	next();
+});
+
+var bodyParser = require('body-parser');
 
 // Create application/json parser
 var jsonParser = bodyParser.json();
 
 var smartcarAPI = require('./smartcar.js');
 
+// App routing table
 app.get('/vehicles/:id', smartcarAPI.vehicleInfo);
 app.get('/vehicles/:id/doors', smartcarAPI.security);
 app.get('/vehicles/:id/fuel', smartcarAPI.fuelRange);
