@@ -15,7 +15,7 @@ var onResult = function(res, transform) {
 		else {
 			var json = transform(res, result);
 			if (json) {
-				res.send(JSON.stringify(json));
+				res.set('Content-type','application/json').send(JSON.stringify(json));
 			}
 		}
 	}
@@ -63,10 +63,9 @@ var transform3 = function(res, result) {
 	var temp = result.data.tankLevel.value;
 	if (temp.toLowerCase() === 'null') {
 		res.status(400).send('This electric vehicle does not have a tank.');
+		return;
 	}
-	else {
-		return { 'percent': parseInt(temp) };
-	}
+	return { 'percent': parseInt(temp) };
 };
 
 exports.batteryRange = function(req, res) {
@@ -80,15 +79,24 @@ var transform4 = function(res, result) {
 	var temp = result.data.batteryLevel.value;
 	if (temp.toLowerCase() === 'null') {
 		res.status(400).send('This vehicle does not have a battery.');
+		return;
 	}
-	else {
-		return { 'percent': parseInt(temp) };
-	}
+	return { 'percent': parseInt(temp) };
 };
 
 exports.startStopEngine = function(req, res) {
 	var id = req.params.id;
 	var action = req.body.action;
+
+	if (!action || action.trim() === '') {
+		res.status(400).send('Action is required.');
+		return;
+	} 
+	
+	if (action !== 'START' && action !== 'STOP') {
+		res.status(400).send('Invalid action: '+action);
+		return;
+	}
 
 	gmAPI.startStopEngine(id, action, onResult(res, transform5));
 };
