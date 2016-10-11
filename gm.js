@@ -7,6 +7,7 @@ var getOptions = function(uri) {
 		method: 'POST', 
 		headers: {'Content-Type': 'application/json'}
 	};
+	return options;
 }
 
 exports.vehicleInfo = function(id, onResult1) {
@@ -31,5 +32,5 @@ exports.startStopEngine = function(id, action, onResult5) {
 	var options = getOptions('/actionEngineService');
 	var command = action + '_VEHICLE';
 	var data = {'id': id, 'command': command, 'responseType': 'JSON'};
-	rest.post(options, data, onResult4);
+	rest.post(options, data, onResult5);
 }

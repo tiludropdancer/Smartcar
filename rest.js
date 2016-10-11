@@ -24,4 +24,8 @@ exports.post = function(options, data, onResult) {
 	req.on('error', function(err) {
 		onResult(500, err);
 	});
+
+	req.write(JSON.stringify(data));
+
+	req.end();	
 }
