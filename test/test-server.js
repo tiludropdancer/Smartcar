@@ -331,6 +331,16 @@ describe('startStopEngineTest', function() {
 				done();
 			});
 	});
+	it('should not find without request body /vehicles/1234/engine POST', function(done) {
+  		chai.request(server)
+    		.post('/vehicles/1234/engine')
+    		.end(function(err, res) {
+				expect(res).to.have.status(400);
+				expect(res).to.be.html;
+            	expect(res.text).to.be.string('Action is required.');
+				done();
+			});
+	});
 });
 
 describe('404Test', function() {
