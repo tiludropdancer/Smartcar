@@ -7,7 +7,7 @@
 */
 
 
-// load http module
+// Load http module
 var http = require('http');
 
 exports.post = function(options, data, onResult) {

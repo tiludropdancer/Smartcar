@@ -1,34 +1,34 @@
 /**
-* Module that implements Smartcar API by delegating to GM API methods
+* Module that implements Smartcar API by delegating to GM API module methods
 *
 * Author: Anastasia Radchenko
 * Date: 10/11/16
 */
 
+// Load gm module
+var gm = require('./gm.js');
 
-// Loads gm module
-var gmAPI = require('./gm.js');
-
-// Gets data from gm module and passes respective transformer
+// Get vehile info data from gm module and pass respective transformer to a callback
 exports.vehicleInfo = function(req, res) {
 
 	var id = req.params.id;
 
-	gmAPI.vehicleInfo(id, onResult(res, transformVehicleInfo))
+	gm.vehicleInfo(id, onResult(res, transformVehicleInfo))
 };
 
-// takes our express response and GM-to-Smartcar payload transformer 
-// and returns a callback, that will apply that transformer to a data
-// received from the GM service, and will send transformed data or an error
-// to our client
+// Helper method that creates a callback to process data received from GM service
 var onResult = function(res, transform) {
+	// Create the callback function
 	return function(statusCode, result) {
 		if (statusCode != 200) {
+			// Handle the error
 			res.status(statusCode).send(result.message);
 		}
 		else {
+			// Apply data trasformer
 			var json = transform(res, result);
 			if (json) {
+				// Send transformed data to client
 				res.contentType('application/json').send(JSON.stringify(json));
 			}
 		}
@@ -46,12 +46,12 @@ var transformVehicleInfo = function(res, result) {
 	return json;
 }
 
-// Gets data from gm module and passes respective transformer
+// Get vehile security data from gm module and pass respective transformer to a callback
 exports.security = function(req, res) {
 
 	var id = req.params.id;
 
-	gmAPI.security(id, onResult(res, transformSecurity));
+	gm.security(id, onResult(res, transformSecurity));
 };
 
 // Transforms security info into smartcar format
@@ -68,12 +68,12 @@ var transformSecurity = function(res, result) {
 	return json;
 };
 
-// Gets data from gm module and passes respective transformer
+// Get fuel tank level data from gm module and pass respective transformer to a callback
 exports.fuelRange = function(req, res) {
 
 	var id = req.params.id;
 
-	gmAPI.fuelBatteryLevel(id, onResult(res, transformFuelLevel));
+	gm.fuelBatteryLevel(id, onResult(res, transformFuelLevel));
 };
 
 // Transforms fuel level into smartcar format
@@ -86,12 +86,12 @@ var transformFuelLevel = function(res, result) {
 	return {percent: parseInt(temp)};
 };
 
-// Gets data from gm module and passes respective transformer
+// Get battery level data from gm module and pass respective transformer to a callback
 exports.batteryRange = function(req, res) {
 
 	var id = req.params.id;
 
-	gmAPI.fuelBatteryLevel(id, onResult(res, transformBatteryLevel));
+	gm.fuelBatteryLevel(id, onResult(res, transformBatteryLevel));
 };
 
 // Transforms battery level into smartcar format
@@ -104,7 +104,7 @@ var transformBatteryLevel = function(res, result) {
 	return {percent: parseInt(temp)};
 };
 
-// Sends command to GM service and passes respective transformer
+// Send start/stop engine action to gm module and pass respective transformer to a callback
 exports.startStopEngine = function(req, res) {
 	var id = req.params.id;
 	var action = req.body.action;
@@ -119,10 +119,10 @@ exports.startStopEngine = function(req, res) {
 		return;
 	}
 
-	gmAPI.startStopEngine(id, action, onResult(res, transformActionStatus));
+	gm.startStopEngine(id, action, onResult(res, transformActionStatus));
 };
 
-// Transforms action result into smartcar format
+// Transforms start/stop engine action result into smartcar format
 var transformActionStatus = function(res, result) {
 	var temp = result.actionResult.status.toLowerCase();
 	if (temp === 'executed') {
